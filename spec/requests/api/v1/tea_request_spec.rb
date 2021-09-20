@@ -11,7 +11,6 @@ describe "Tea API" do
 
     expect(teas.count).to eq(3)
 
-    # binding.pry
     teas.each do |tea|
       expect(tea).to have_key(:id)
       expect(tea[:id]).to be_an(Integer)
