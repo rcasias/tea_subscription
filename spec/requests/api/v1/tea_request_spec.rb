@@ -11,6 +11,7 @@ describe "Tea API" do
 
     expect(teas.count).to eq(3)
 
+    # binding.pry
     teas.each do |tea|
       expect(tea).to have_key(:id)
       expect(tea[:id]).to be_an(Integer)
@@ -26,6 +27,9 @@ describe "Tea API" do
 
       expect(tea).to have_key(:brew_time)
       expect(tea[:brew_time]).to be_a(String)
+
+      expect(tea).to have_key(:price)
+      expect(tea[:price]).to be_a(Integer)
     end
   end
 
@@ -52,5 +56,8 @@ describe "Tea API" do
 
     expect(tea).to have_key(:brew_time)
     expect(tea[:brew_time]).to be_a(String)
+
+    expect(tea).to have_key(:price)
+    expect(tea[:price]).to be_a(Integer)
   end
 end
