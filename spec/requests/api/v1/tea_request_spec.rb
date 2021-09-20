@@ -53,6 +53,4 @@ describe "Tea API" do
     expect(tea).to have_key(:brew_time)
     expect(tea[:brew_time]).to be_a(String)
   end
-
-
 end
