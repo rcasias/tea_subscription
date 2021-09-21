@@ -14,7 +14,7 @@ describe "Subscription API" do
     subscription2 = Subscription.create(customer_id: @customer2.id, tea_id: @tea2.id, frequency: 30)
     subscription3 = Subscription.create(customer_id: @customer3.id, tea_id: @tea3.id, frequency: 30)
     subscription4 = Subscription.create(customer_id: @customer3.id, tea_id: @tea1.id, frequency: 30)
-    
+
     get '/api/v1/subscriptions'
 
     expect(response).to be_successful
@@ -72,5 +72,25 @@ describe "Subscription API" do
 
     expect(subscription).to have_key(:frequency)
     expect(subscription[:frequency]).to be_a(Integer)
+  end
+
+  it "can create a new subscription" do
+    customer = create(:customer)
+    tea = create(:tea)
+    subscription_params = ({
+                    customer_id: customer.id,
+                    tea_id: tea.id,
+                    frequency: 30,
+                  })
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    post "/api/v1/subscriptions", headers: headers, params: JSON.generate(subscription: subscription_params)
+    created_subscription = Subscription.last
+    
+    expect(response).to be_successful
+    expect(created_subscription.customer_id).to eq(customer.id)
+    expect(created_subscription.tea_id).to eq(tea.id)
+    expect(created_subscription.is_active).to eq(true)
+    expect(created_subscription.frequency).to eq(30)
   end
 end
