@@ -16,8 +16,8 @@ describe "Cutsomer Subscriptions" do
     get "/api/v1/customers/#{customer_1.id}/subscriptions"
 
     data = JSON.parse(response.body, symbolize_names: true)
-
+  
     expect(response).to be_successful
-    expect(data.count).to eq(3)
+    expect(data[:data].count).to eq(3)
   end
 end
