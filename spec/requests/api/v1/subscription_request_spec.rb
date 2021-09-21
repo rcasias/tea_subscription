@@ -86,11 +86,37 @@ describe "Subscription API" do
 
     post "/api/v1/subscriptions", headers: headers, params: JSON.generate(subscription: subscription_params)
     created_subscription = Subscription.last
-    
+
     expect(response).to be_successful
     expect(created_subscription.customer_id).to eq(customer.id)
     expect(created_subscription.tea_id).to eq(tea.id)
     expect(created_subscription.is_active).to eq(true)
     expect(created_subscription.frequency).to eq(30)
+  end
+
+  it "can update an existing subscription" do
+    customer = create(:customer)
+    tea = create(:tea)
+    subscription_params = ({
+                    customer_id: customer.id,
+                    tea_id: tea.id,
+                    frequency: 30,
+                  })
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+    post "/api/v1/subscriptions", headers: headers, params: JSON.generate(subscription: subscription_params)
+    created_subscription = Subscription.last
+
+    id = Subscription.last.id
+    previous_status = Subscription.last.is_active
+    new_subscription_params = { is_active: false }
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+    patch "/api/v1/subscriptions/#{id}", headers: headers, params: JSON.generate({subscription: new_subscription_params})
+    subscription = Subscription.find_by(id: id)
+
+    expect(response).to be_successful
+    expect(subscription.is_active).to_not eq(previous_status)
+    expect(subscription.is_active).to eq(false)
   end
 end
