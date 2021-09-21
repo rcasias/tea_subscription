@@ -14,7 +14,7 @@ describe "Subscription API" do
     subscription2 = Subscription.create(customer_id: @customer2.id, tea_id: @tea2.id, frequency: 30)
     subscription3 = Subscription.create(customer_id: @customer3.id, tea_id: @tea3.id, frequency: 30)
     subscription4 = Subscription.create(customer_id: @customer3.id, tea_id: @tea1.id, frequency: 30)
-    # binding.pry
+    
     get '/api/v1/subscriptions'
 
     expect(response).to be_successful
