@@ -8,7 +8,7 @@ describe "Tea API" do
 
     expect(response).to be_successful
     teas = JSON.parse(response.body, symbolize_names: true)
-    binding.pry
+    # binding.pry
 
     expect(teas.count).to eq(3)
 
