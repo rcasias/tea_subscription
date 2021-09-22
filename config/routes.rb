@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :customers do
-        resources :subscriptions, controller: :customer_subscriptions, only: :index
+        resources :subscriptions, controller: :customer_subscriptions
       end
     end
   end
