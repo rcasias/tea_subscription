@@ -18,25 +18,27 @@ describe "Subscription API" do
     get '/api/v1/subscriptions'
 
     expect(response).to be_successful
-    subscriptions = JSON.parse(response.body, symbolize_names: true)
+    subscriptions_data = JSON.parse(response.body, symbolize_names: true)
+
+    subscriptions = subscriptions_data[:data]
 
     expect(subscriptions.count).to eq(4)
 
     subscriptions.each do |subscription|
       expect(subscription).to have_key(:id)
-      expect(subscription[:id]).to be_an(Integer)
+      expect(subscription[:id]).to be_an(String)
 
-      expect(subscription).to have_key(:customer_id)
-      expect(subscription[:customer_id]).to be_a(Integer)
+      expect(subscription[:attributes]).to have_key(:customer_id)
+      expect(subscription[:attributes][:customer_id]).to be_a(Integer)
 
-      expect(subscription).to have_key(:tea_id)
-      expect(subscription[:tea_id]).to be_a(Integer)
+      expect(subscription[:attributes]).to have_key(:tea_id)
+      expect(subscription[:attributes][:tea_id]).to be_a(Integer)
 
-      expect(subscription).to have_key(:is_active)
-      expect(subscription[:is_active]).to eq(true)
+      expect(subscription[:attributes]).to have_key(:is_active)
+      expect(subscription[:attributes][:is_active]).to eq(true)
 
-      expect(subscription).to have_key(:frequency)
-      expect(subscription[:frequency]).to be_a(Integer)
+      expect(subscription[:attributes]).to have_key(:frequency)
+      expect(subscription[:attributes][:frequency]).to be_a(Integer)
     end
   end
 
@@ -56,10 +58,12 @@ describe "Subscription API" do
 
     get "/api/v1/subscriptions/#{subscription1.id}"
 
-    subscription = JSON.parse(response.body, symbolize_names: true)
+    subscription_data = JSON.parse(response.body, symbolize_names: true)
 
-    expect(subscription).to have_key(:id)
-    expect(subscription[:id]).to be_an(Integer)
+    subscription = subscription_data[:data][:attributes]
+
+    expect(subscription_data[:data]).to have_key(:id)
+    expect(subscription_data[:data][:id]).to be_an(String)
 
     expect(subscription).to have_key(:customer_id)
     expect(subscription[:customer_id]).to be_a(Integer)
