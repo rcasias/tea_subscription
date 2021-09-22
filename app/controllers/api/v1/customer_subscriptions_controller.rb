@@ -8,8 +8,17 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
 
   def create
     @customer = Customer.find(params[:customer_id])
-    @new_subscription = @customer.subscriptions.create(subscription_params)
-    render json: @new_subscription
+    if !params[:tea_id].nil? && !params[:frequency].nil?
+      @new_subscription = @customer.subscriptions.create(subscription_params)
+      render json: @new_subscription
+    else
+      render json: {
+                    "message": "your query could not be completed",
+                    "error": [
+                      "please provide tea_id and frequency for subsription"
+                    ]
+                    }, status: 404 and return
+    end
   end
 
   def update
