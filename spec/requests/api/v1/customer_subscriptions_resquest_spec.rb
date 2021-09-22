@@ -65,4 +65,18 @@ describe "Cutsomer Subscriptions" do
     expect(subscription.is_active).to eq(false)
   end
 
+  it "sad path - cannot create a new subscription" do
+    customer = create(:customer)
+    tea = create(:tea)
+    subscription_params = ({
+                    tea_id: tea.id
+                  })
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    post "/api/v1/customers/#{customer.id}/subscriptions", headers: headers, params: JSON.generate(subscription_params)
+    created_subscription = customer.subscriptions.last
+
+    expect(response).to_not be_successful
+  end
+
 end
