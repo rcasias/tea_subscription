@@ -9,7 +9,6 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
   def create
     @customer = Customer.find(params[:customer_id])
     if !params[:tea_id].nil? && !params[:frequency].nil?
-      # binding.pry
       @new_subscription = @customer.subscriptions.create(subscription_params)
       render json: @new_subscription
     else
