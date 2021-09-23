@@ -8,8 +8,8 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
 
   def create
     @customer = Customer.find(params[:customer_id])
-    if !params[:tea_id].nil? && !params[:frequency].nil?
-      @new_subscription = @customer.subscriptions.create(subscription_params)
+    @new_subscription = @customer.subscriptions.create(subscription_params)
+    if @new_subscription.save 
       render json: @new_subscription
     else
       render json: {
